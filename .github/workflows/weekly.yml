@@ -2,18 +2,16 @@ name: Weekly Briefing Auto-Update
 
 on:
   schedule:
-    # 매주 월요일 08:10 KST = 일요일 23:10 UTC
     - cron: '10 23 * * 0'
   workflow_dispatch:
     inputs:
       week_override:
-        description: '특정 주차로 강제 생성 (예 22). 비우면 자동 계산.'
+        description: 'Force a specific week number (e.g. 22). Leave empty for auto.'
         required: false
         default: ''
   push:
     branches: [main]
     paths:
-      # 코드 변경 시 자동 트리거 (docs/data 자기 자신 commit은 제외 → 무한 루프 방지)
       - 'scripts/**'
       - 'templates/**'
       - '.github/workflows/**'
@@ -67,6 +65,5 @@ jobs:
             echo "No changes to commit."
             exit 0
           fi
-          # Python이 기록한 last_run.json에서 정확한 주차 번호 읽기
-          WEEK=$(python3 -c "import json; print(json.load(open('data/last_run.json'))['week'])" 2>/dev/null || echo "unknown")
-          FETCHED=$(python3 -c "import json
+          git commit -m "Auto-update weekly briefing"
+          git push origin main
