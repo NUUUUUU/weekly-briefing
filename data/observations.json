@@ -1,56 +1,141 @@
 {
   "metadata": {
-    "updated_at": "2026-05-26T09:10:00+09:00",
-    "reporting_week": 22,
+    "updated_at": "2026-05-26T12:35:12.022409+09:00",
+    "reporting_week": 23,
     "year": 2026,
     "schema_version": 1,
-    "seeded_from": "22w.html"
+    "seeded_from": "22w.html",
+    "auto_run": true,
+    "last_fetched": [
+      "usdkrw",
+      "cnykrw",
+      "lge"
+    ]
   },
   "indicators": {
     "usdkrw": {
       "label": "USD/KRW",
       "color": "#2563eb",
       "monthly_only": false,
-      "meta": "최신 1,517.20 · 전일 1,506.10 · 1,500원대 박스 상단 재돌파",
+      "meta": "최신 1.0 (2026-05-31) · 전 1,517.2 (▼-1516.20) · (자동)",
       "badge": "fresh",
-      "badge_text": "5/22 일",
+      "badge_text": "05/31 일",
       "links": [
-        {"text": "Investing.com 과거데이터", "url": "https://kr.investing.com/currencies/usd-krw-historical-data"},
-        {"text": "한국은행 ECOS", "url": "https://snapshot.bok.or.kr/?en=y"}
+        {
+          "text": "Investing.com 과거데이터",
+          "url": "https://kr.investing.com/currencies/usd-krw-historical-data"
+        },
+        {
+          "text": "한국은행 ECOS",
+          "url": "https://snapshot.bok.or.kr/?en=y"
+        }
       ],
       "note": "관측치는 진한 점, 보간점은 회색. 중간 구간은 월별 언론 보도 기반 추정.",
       "note_warn": false,
       "data": [
-        {"date": "2025-12-15", "value": 1450, "observed": false},
-        {"date": "2026-01-15", "value": 1470, "observed": false},
-        {"date": "2026-02-13", "value": 1490, "observed": false},
-        {"date": "2026-03-15", "value": 1495, "observed": false},
-        {"date": "2026-04-15", "value": 1485, "observed": false},
-        {"date": "2026-05-15", "value": 1500, "observed": false},
-        {"date": "2026-05-21", "value": 1506.1, "observed": true},
-        {"date": "2026-05-22", "value": 1517.2, "observed": true}
+        {
+          "date": "2025-12-15",
+          "value": 1450,
+          "observed": false
+        },
+        {
+          "date": "2026-01-15",
+          "value": 1470,
+          "observed": false
+        },
+        {
+          "date": "2026-02-13",
+          "value": 1490,
+          "observed": false
+        },
+        {
+          "date": "2026-03-15",
+          "value": 1495,
+          "observed": false
+        },
+        {
+          "date": "2026-04-15",
+          "value": 1485,
+          "observed": false
+        },
+        {
+          "date": "2026-05-15",
+          "value": 1500,
+          "observed": false
+        },
+        {
+          "date": "2026-05-21",
+          "value": 1506.1,
+          "observed": true
+        },
+        {
+          "date": "2026-05-22",
+          "value": 1517.2,
+          "observed": true
+        },
+        {
+          "date": "2026-05-31",
+          "value": 1.0,
+          "observed": true
+        }
       ]
     },
     "cnykrw": {
       "label": "CNY/KRW",
       "color": "#dc2626",
       "monthly_only": false,
-      "meta": "최신 223.14 · 전일 221.29 · 위안화 강세 동반",
+      "meta": "최신 2.0 (2026-05-31) · 전 223.14 (▼-221.14) · (자동)",
       "badge": "fresh",
-      "badge_text": "5/22 일",
+      "badge_text": "05/31 일",
       "links": [
-        {"text": "Investing.com 과거데이터", "url": "https://kr.investing.com/currencies/cny-krw-historical-data"}
+        {
+          "text": "Investing.com 과거데이터",
+          "url": "https://kr.investing.com/currencies/cny-krw-historical-data"
+        }
       ],
       "note": "⚠ 12월~4월 일별 종가 직접 확인 미완료. 5월 일별만 신뢰.",
       "note_warn": true,
       "data": [
-        {"date": "2026-01-15", "value": 200, "observed": false},
-        {"date": "2026-02-15", "value": 205, "observed": false},
-        {"date": "2026-03-15", "value": 207, "observed": false},
-        {"date": "2026-04-15", "value": 210, "observed": false},
-        {"date": "2026-05-15", "value": 218, "observed": false},
-        {"date": "2026-05-21", "value": 221.29, "observed": true},
-        {"date": "2026-05-22", "value": 223.14, "observed": true}
+        {
+          "date": "2026-01-15",
+          "value": 200,
+          "observed": false
+        },
+        {
+          "date": "2026-02-15",
+          "value": 205,
+          "observed": false
+        },
+        {
+          "date": "2026-03-15",
+          "value": 207,
+          "observed": false
+        },
+        {
+          "date": "2026-04-15",
+          "value": 210,
+          "observed": false
+        },
+        {
+          "date": "2026-05-15",
+          "value": 218,
+          "observed": false
+        },
+        {
+          "date": "2026-05-21",
+          "value": 221.29,
+          "observed": true
+        },
+        {
+          "date": "2026-05-22",
+          "value": 223.14,
+          "observed": true
+        },
+        {
+          "date": "2026-05-31",
+          "value": 2.0,
+          "observed": true
+        }
       ]
     },
     "thbkrw": {
@@ -61,14 +146,29 @@
       "badge": "lag",
       "badge_text": "직전 추정",
       "links": [
-        {"text": "Investing.com THB/KRW", "url": "https://kr.investing.com/currencies/thb-krw-converter"}
+        {
+          "text": "Investing.com THB/KRW",
+          "url": "https://kr.investing.com/currencies/thb-krw-converter"
+        }
       ],
       "note": "⚠ 직접 수집된 일별 종가 없음. ECOS API 연동 권고.",
       "note_warn": true,
       "data": [
-        {"date": "2026-04-30", "value": 44.5, "observed": false},
-        {"date": "2026-05-15", "value": 46.0, "observed": false},
-        {"date": "2026-05-22", "value": 46.5, "observed": false}
+        {
+          "date": "2026-04-30",
+          "value": 44.5,
+          "observed": false
+        },
+        {
+          "date": "2026-05-15",
+          "value": 46.0,
+          "observed": false
+        },
+        {
+          "date": "2026-05-22",
+          "value": 46.5,
+          "observed": false
+        }
       ]
     },
     "usdegp": {
@@ -79,18 +179,48 @@
       "badge": "fresh",
       "badge_text": "5/25 일",
       "links": [
-        {"text": "Trading Economics", "url": "https://tradingeconomics.com/egypt/currency"},
-        {"text": "이집트 중앙은행(CBE)", "url": "https://www.cbe.org.eg/en/"}
+        {
+          "text": "Trading Economics",
+          "url": "https://tradingeconomics.com/egypt/currency"
+        },
+        {
+          "text": "이집트 중앙은행(CBE)",
+          "url": "https://www.cbe.org.eg/en/"
+        }
       ],
       "note": "EIU 장기 전망: 2029년 USD/EGP 57.9. 단기는 IMF EFF 4차 리뷰(2025-03) 완료로 안정화 단계.",
       "note_warn": false,
       "data": [
-        {"date": "2025-12-15", "value": 50.5, "observed": false},
-        {"date": "2026-01-15", "value": 50.7, "observed": false},
-        {"date": "2026-02-15", "value": 50.9, "observed": false},
-        {"date": "2026-03-15", "value": 51.5, "observed": false},
-        {"date": "2026-04-15", "value": 51.9, "observed": false},
-        {"date": "2026-05-25", "value": 52.28, "observed": true}
+        {
+          "date": "2025-12-15",
+          "value": 50.5,
+          "observed": false
+        },
+        {
+          "date": "2026-01-15",
+          "value": 50.7,
+          "observed": false
+        },
+        {
+          "date": "2026-02-15",
+          "value": 50.9,
+          "observed": false
+        },
+        {
+          "date": "2026-03-15",
+          "value": 51.5,
+          "observed": false
+        },
+        {
+          "date": "2026-04-15",
+          "value": 51.9,
+          "observed": false
+        },
+        {
+          "date": "2026-05-25",
+          "value": 52.28,
+          "observed": true
+        }
       ]
     },
     "hrc": {
@@ -101,20 +231,54 @@
       "badge": "fresh",
       "badge_text": "5/8 주",
       "links": [
-        {"text": "하나증권 Weekly (5/8)", "url": "https://www.laborplus.co.kr/news/articleView.html?idxno=40813"},
-        {"text": "이데일리 — 포스코 2Q 인상", "url": "https://n.news.naver.com/mnews/article/018/0006268842"}
+        {
+          "text": "하나증권 Weekly (5/8)",
+          "url": "https://www.laborplus.co.kr/news/articleView.html?idxno=40813"
+        },
+        {
+          "text": "이데일리 — 포스코 2Q 인상",
+          "url": "https://n.news.naver.com/mnews/article/018/0006268842"
+        }
       ],
       "note": "주간 지표 (하나증권 철강금속 Weekly).",
       "note_warn": false,
       "unit_label": "국내 유통, 만원/t",
       "data": [
-        {"date": "2026-01-01", "value": 88, "observed": false},
-        {"date": "2026-02-01", "value": 90, "observed": false},
-        {"date": "2026-02-28", "value": 91, "observed": false},
-        {"date": "2026-04-01", "value": 93, "observed": false},
-        {"date": "2026-04-22", "value": 95, "observed": false},
-        {"date": "2026-05-01", "value": 95, "observed": true},
-        {"date": "2026-05-08", "value": 96, "observed": true}
+        {
+          "date": "2026-01-01",
+          "value": 88,
+          "observed": false
+        },
+        {
+          "date": "2026-02-01",
+          "value": 90,
+          "observed": false
+        },
+        {
+          "date": "2026-02-28",
+          "value": 91,
+          "observed": false
+        },
+        {
+          "date": "2026-04-01",
+          "value": 93,
+          "observed": false
+        },
+        {
+          "date": "2026-04-22",
+          "value": 95,
+          "observed": false
+        },
+        {
+          "date": "2026-05-01",
+          "value": 95,
+          "observed": true
+        },
+        {
+          "date": "2026-05-08",
+          "value": 96,
+          "observed": true
+        }
       ]
     },
     "crc": {
@@ -125,15 +289,30 @@
       "badge": "stale",
       "badge_text": "분기 주",
       "links": [
-        {"text": "2Q 인상 발표 (이데일리)", "url": "https://n.news.naver.com/mnews/article/018/0006268842"}
+        {
+          "text": "2Q 인상 발표 (이데일리)",
+          "url": "https://n.news.naver.com/mnews/article/018/0006268842"
+        }
       ],
       "note": "CRC는 메이저 제조사 출하단가 기준. 유통가는 별도 추적.",
       "note_warn": false,
       "unit_label": "포스코 2분기 인상폭, 만원/t",
       "data": [
-        {"date": "2026-01-01", "value": 0, "observed": false},
-        {"date": "2026-04-01", "value": 0, "observed": false},
-        {"date": "2026-04-29", "value": 5, "observed": true}
+        {
+          "date": "2026-01-01",
+          "value": 0,
+          "observed": false
+        },
+        {
+          "date": "2026-04-01",
+          "value": 0,
+          "observed": false
+        },
+        {
+          "date": "2026-04-29",
+          "value": 5,
+          "observed": true
+        }
       ]
     },
     "alu": {
@@ -144,43 +323,112 @@
       "badge": "fresh",
       "badge_text": "5/13 일",
       "links": [
-        {"text": "구리·알루미늄 시황 (5/26)", "url": "https://kidd.co.kr/news/246132"},
-        {"text": "알루미늄 4년래 최고 (헤럴드)", "url": "https://n.news.naver.com/mnews/article/016/0002647124"}
+        {
+          "text": "구리·알루미늄 시황 (5/26)",
+          "url": "https://kidd.co.kr/news/246132"
+        },
+        {
+          "text": "알루미늄 4년래 최고 (헤럴드)",
+          "url": "https://n.news.naver.com/mnews/article/016/0002647124"
+        }
       ],
       "note": "",
       "note_warn": false,
       "unit_label": "3M, USD/t",
       "data": [
-        {"date": "2025-12-01", "value": 2750, "observed": false},
-        {"date": "2026-01-15", "value": 2900, "observed": false},
-        {"date": "2026-02-15", "value": 3050, "observed": false},
-        {"date": "2026-03-15", "value": 3200, "observed": false},
-        {"date": "2026-04-15", "value": 3400, "observed": false},
-        {"date": "2026-05-13", "value": 3653.85, "observed": true}
+        {
+          "date": "2025-12-01",
+          "value": 2750,
+          "observed": false
+        },
+        {
+          "date": "2026-01-15",
+          "value": 2900,
+          "observed": false
+        },
+        {
+          "date": "2026-02-15",
+          "value": 3050,
+          "observed": false
+        },
+        {
+          "date": "2026-03-15",
+          "value": 3200,
+          "observed": false
+        },
+        {
+          "date": "2026-04-15",
+          "value": 3400,
+          "observed": false
+        },
+        {
+          "date": "2026-05-13",
+          "value": 3653.85,
+          "observed": true
+        }
       ]
     },
     "lge": {
       "label": "LG전자",
       "color": "#ea580c",
       "monthly_only": false,
-      "meta": "237,000원 (5/22) · 4/30 대비 +74.5% · 5/18 일중 -12.9% 급락 후 회복(변동성↑)",
+      "meta": "최신 240,750 (2026-05-31) · 전 237,000 (▲+3750.00) · (자동)",
       "badge": "fresh",
-      "badge_text": "5/22 일",
+      "badge_text": "05/31 일",
       "links": [
-        {"text": "조선비즈 — 5월 +74.5%", "url": "https://n.news.naver.com/mnews/article/366/0001166882"},
-        {"text": "탑스타 — 5월 3주 변동성", "url": "https://www.topstarnews.net/news/articleView.html?idxno=16069440"}
+        {
+          "text": "조선비즈 — 5월 +74.5%",
+          "url": "https://n.news.naver.com/mnews/article/366/0001166882"
+        },
+        {
+          "text": "탑스타 — 5월 3주 변동성",
+          "url": "https://www.topstarnews.net/news/articleView.html?idxno=16069440"
+        }
       ],
       "note": "",
       "note_warn": false,
       "unit_label": "KRW, 종가",
       "data": [
-        {"date": "2025-12-31", "value": 90000, "observed": false},
-        {"date": "2026-01-23", "value": 105600, "observed": true},
-        {"date": "2026-02-13", "value": 191400, "observed": true},
-        {"date": "2026-03-31", "value": 150000, "observed": false},
-        {"date": "2026-04-30", "value": 135800, "observed": true},
-        {"date": "2026-05-18", "value": 217000, "observed": true},
-        {"date": "2026-05-22", "value": 237000, "observed": true}
+        {
+          "date": "2025-12-31",
+          "value": 90000,
+          "observed": false
+        },
+        {
+          "date": "2026-01-23",
+          "value": 105600,
+          "observed": true
+        },
+        {
+          "date": "2026-02-13",
+          "value": 191400,
+          "observed": true
+        },
+        {
+          "date": "2026-03-31",
+          "value": 150000,
+          "observed": false
+        },
+        {
+          "date": "2026-04-30",
+          "value": 135800,
+          "observed": true
+        },
+        {
+          "date": "2026-05-18",
+          "value": 217000,
+          "observed": true
+        },
+        {
+          "date": "2026-05-22",
+          "value": 237000,
+          "observed": true
+        },
+        {
+          "date": "2026-05-31",
+          "value": 240750,
+          "observed": true
+        }
       ]
     },
     "kpmi": {
@@ -191,16 +439,39 @@
       "badge": "stale",
       "badge_text": "4월 월",
       "links": [
-        {"text": "5월 발표 일정 (인포맥스)", "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4416226"}
+        {
+          "text": "5월 발표 일정 (인포맥스)",
+          "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4416226"
+        }
       ],
       "note": "월간 지표 — 일/주 토글 무시, 항상 월간 표시.",
       "note_warn": false,
       "data": [
-        {"date": "2025-12", "value": 49.5, "observed": false},
-        {"date": "2026-01", "value": 50.2, "observed": false},
-        {"date": "2026-02", "value": 50.5, "observed": false},
-        {"date": "2026-03", "value": 50.8, "observed": false},
-        {"date": "2026-04", "value": 51.6, "observed": true}
+        {
+          "date": "2025-12",
+          "value": 49.5,
+          "observed": false
+        },
+        {
+          "date": "2026-01",
+          "value": 50.2,
+          "observed": false
+        },
+        {
+          "date": "2026-02",
+          "value": 50.5,
+          "observed": false
+        },
+        {
+          "date": "2026-03",
+          "value": 50.8,
+          "observed": false
+        },
+        {
+          "date": "2026-04",
+          "value": 51.6,
+          "observed": true
+        }
       ]
     },
     "cpmi": {
@@ -211,18 +482,44 @@
       "badge": "stale",
       "badge_text": "4월 월",
       "links": [
-        {"text": "4월 중국 PMI 50.3 (경향)", "url": "https://n.news.naver.com/mnews/article/032/0003443087"},
-        {"text": "차이신 52.2 (파이낸셜뉴스)", "url": "https://n.news.naver.com/mnews/article/014/0005515731"}
+        {
+          "text": "4월 중국 PMI 50.3 (경향)",
+          "url": "https://n.news.naver.com/mnews/article/032/0003443087"
+        },
+        {
+          "text": "차이신 52.2 (파이낸셜뉴스)",
+          "url": "https://n.news.naver.com/mnews/article/014/0005515731"
+        }
       ],
       "note": "월간 지표 — 일/주 토글 무시, 항상 월간 표시.",
       "note_warn": false,
       "unit_label": "공식 / 차이신·레이팅도그",
       "data": [
-        {"date": "2025-12", "value": 49.8, "observed": false},
-        {"date": "2026-01", "value": 49.5, "observed": false},
-        {"date": "2026-02", "value": 49.8, "observed": false},
-        {"date": "2026-03", "value": 50.8, "observed": true},
-        {"date": "2026-04", "value": 50.3, "observed": true}
+        {
+          "date": "2025-12",
+          "value": 49.8,
+          "observed": false
+        },
+        {
+          "date": "2026-01",
+          "value": 49.5,
+          "observed": false
+        },
+        {
+          "date": "2026-02",
+          "value": 49.8,
+          "observed": false
+        },
+        {
+          "date": "2026-03",
+          "value": 50.8,
+          "observed": true
+        },
+        {
+          "date": "2026-04",
+          "value": 50.3,
+          "observed": true
+        }
       ]
     }
   }
