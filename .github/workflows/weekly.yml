@@ -10,6 +10,13 @@ on:
         description: '특정 주차로 강제 생성 (예 22). 비우면 자동 계산.'
         required: false
         default: ''
+  push:
+    branches: [main]
+    paths:
+      # 코드 변경 시 자동 트리거 (docs/data 자기 자신 commit은 제외 → 무한 루프 방지)
+      - 'scripts/**'
+      - 'templates/**'
+      - '.github/workflows/**'
 
 permissions:
   contents: write
