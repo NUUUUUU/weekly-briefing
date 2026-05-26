@@ -22,8 +22,6 @@ Weekly Briefing Auto-Update Script
   5. docs/index.html에 최신 주차 링크 추가
   6. data/last_run.json에 실행 메타 기록 (워크플로우가 commit 메시지에 사용)
 """
-from __future__ import annotations
-
 import html as html_mod
 import json
 import os
