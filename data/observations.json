@@ -6,11 +6,8 @@
     "schema_version": 1,
     "seeded_from": "22w.html",
     "auto_run": true,
-    "last_fetched": [
-      "usdkrw",
-      "cnykrw",
-      "lge"
-    ]
+    "last_fetched": [],
+    "rollback_note": "5/31 USD=1.0/CNY=2.0 잘못된 파싱 결과 제거, 패치 v2 적용"
   },
   "indicators": {
     "usdkrw": {
@@ -72,11 +69,6 @@
           "date": "2026-05-22",
           "value": 1517.2,
           "observed": true
-        },
-        {
-          "date": "2026-05-31",
-          "value": 1.0,
-          "observed": true
         }
       ]
     },
@@ -129,11 +121,6 @@
         {
           "date": "2026-05-22",
           "value": 223.14,
-          "observed": true
-        },
-        {
-          "date": "2026-05-31",
-          "value": 2.0,
           "observed": true
         }
       ]

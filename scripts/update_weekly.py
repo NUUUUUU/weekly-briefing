@@ -3,12 +3,13 @@
 Weekly Briefing Auto-Update Script
 실행: GitHub Actions가 매주 월요일 08:10 KST에 호출.
 동작:
-  1. 보고 대상 주차(직전 주차) 계산 — 신신사 사내 컨벤션(22주차=5/18~5/24) 기반
+  1. 보고 대상 주차(직전 주차) 계산 - 신신사 사내 컨벤션(22주차=5/18~5/24) 기반
   2. Naver Finance에서 USD/KRW, CNY/KRW, LG전자 종가 스크래핑 시도
-  3. data/observations.json에 누적 (날짜 중복 시 skip)
+     * 방어적 파싱: 매매기준율 라벨 우선, 통화별 값 범위 검증
+  3. data/observations.json에 누적 (날짜 중복 시 skip, 값 검증 후)
   4. templates/scorecard_template.html 기반으로 docs/{week}w.html 생성
   5. docs/index.html에 최신 주차 링크 추가
-스크랩 실패 시 에러는 로그만 남기고 진행 (이전 데이터로라도 새 주차 HTML 생성).
+  6. data/last_run.json에 실행 메타 기록 (워크플로우가 commit 메시지에 사용)
 """
 from __future__ import annotations
 
@@ -18,6 +19,7 @@ import os
 import re
 import sys
 import time
+from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -33,6 +35,7 @@ KST = timezone(timedelta(hours=9))
 NOW = datetime.now(KST)
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA_FILE = REPO_ROOT / "data" / "observations.json"
+LAST_RUN_FILE = REPO_ROOT / "data" / "last_run.json"
 TEMPLATE_FILE = REPO_ROOT / "templates" / "scorecard_template.html"
 DOCS_DIR = REPO_ROOT / "docs"
 INDEX_FILE = DOCS_DIR / "index.html"
@@ -42,10 +45,24 @@ HEADERS = {
     "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8",
 }
 
+# 통화별 매매기준율 합리적 범위 (KRW 기준)
+# 이 범위 밖의 값은 변동률·환산식 등 잘못된 매칭으로 간주하여 거부
+EXPECTED_RATE_RANGE = {
+    "USD": (1000, 2500),
+    "CNY": (150, 400),
+    "JPY": (700, 1500),
+    "EUR": (1300, 2500),
+    "THB": (25, 80),
+    "GBP": (1500, 3000),
+}
+
+# 주식 가격 합리적 범위 (KRW)
+EXPECTED_STOCK_RANGE = {
+    "066570": (50000, 500000),  # LG전자
+}
+
 
 # ---------- 주차 계산 ----------
-# 신신사 주차 컨벤션: 22주차 = 2026-05-18~05-24 (월~일)
-# 앵커 기반: 22주차 월요일을 기준으로 +/- 주차 계산
 ANCHOR_DATE = datetime(2026, 5, 18).date()
 ANCHOR_WEEK = 22
 
@@ -61,7 +78,6 @@ def user_week_to_monday(user_week, year):
 
 
 def get_reporting_week():
-    """보고 대상 주차 = 직전 주 (이번 주 월요일 기준 -1주)."""
     override = os.environ.get("WEEK_OVERRIDE", "").strip()
     today = NOW.date()
     if override.isdigit():
@@ -88,16 +104,51 @@ def parse_number(text):
 
 
 def fetch_naver_exchange(currency_code):
+    """방어적 파싱: 매매기준율 라벨 우선, 값 범위 검증."""
     url = f"https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_{currency_code}KRW"
+    expected_min, expected_max = EXPECTED_RATE_RANGE.get(currency_code, (1, 100000))
+
     try:
         r = requests.get(url, headers=HEADERS, timeout=10)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "lxml")
-        node = soup.select_one(".no_today")
-        if node:
-            val = parse_number(node.get_text(" ", strip=True))
-            if val:
-                return val
+
+        candidates = []
+
+        # 전략 1: '매매기준율' 텍스트 인근 값 (가장 신뢰)
+        for label in soup.find_all(string=re.compile("매매기준율")):
+            parent = label.find_parent(["tr", "div", "p", "li"])
+            if not parent:
+                continue
+            for cell in parent.find_all(string=True):
+                val = parse_number(str(cell))
+                if val and expected_min <= val <= expected_max:
+                    candidates.append(val)
+
+        # 전략 2: head_info 영역의 합리적 값
+        if not candidates:
+            head = soup.select_one(".head_info")
+            if head:
+                for txt in head.find_all(string=True):
+                    val = parse_number(str(txt))
+                    if val and expected_min <= val <= expected_max:
+                        candidates.append(val)
+
+        # 전략 3: 페이지 전체에서 범위 내 값 (mode 사용)
+        if not candidates:
+            for el in soup.find_all(["span", "em", "td", "strong", "div"]):
+                txt = el.get_text(strip=True)
+                val = parse_number(txt)
+                if val and expected_min <= val <= expected_max:
+                    candidates.append(val)
+
+        if candidates:
+            # 가장 자주 나타나는 값 = 환율 (계산기 등에 여러 번 노출)
+            most_common = Counter(candidates).most_common(1)[0][0]
+            print(f"    [DEBUG] {currency_code}/KRW candidates={len(candidates)}, picked={most_common}", file=sys.stderr)
+            return most_common
+
+        print(f"  [WARN] {currency_code}/KRW: no value in range [{expected_min}, {expected_max}]", file=sys.stderr)
     except Exception as e:
         print(f"  [WARN] {currency_code}/KRW fetch failed: {e}", file=sys.stderr)
     return None
@@ -105,15 +156,30 @@ def fetch_naver_exchange(currency_code):
 
 def fetch_naver_stock(code):
     url = f"https://finance.naver.com/item/main.naver?code={code}"
+    expected_min, expected_max = EXPECTED_STOCK_RANGE.get(code, (100, 10000000))
+
     try:
         r = requests.get(url, headers=HEADERS, timeout=10)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "lxml")
+
+        candidates = []
         node = soup.select_one(".no_today")
         if node:
             val = parse_number(node.get_text(" ", strip=True))
-            if val:
+            if val and expected_min <= val <= expected_max:
                 return int(val)
+
+        # 폴백: 페이지 전체에서 범위 내 값
+        for el in soup.find_all(["span", "em", "td", "strong"]):
+            txt = el.get_text(strip=True)
+            val = parse_number(txt)
+            if val and expected_min <= val <= expected_max:
+                candidates.append(val)
+
+        if candidates:
+            return int(Counter(candidates).most_common(1)[0][0])
+        print(f"  [WARN] stock {code}: no value in range [{expected_min}, {expected_max}]", file=sys.stderr)
     except Exception as e:
         print(f"  [WARN] stock {code} fetch failed: {e}", file=sys.stderr)
     return None
@@ -244,85 +310,3 @@ def update_index(year, week, range_str):
         print(f"  [WARN] index.html 없음, skip", file=sys.stderr)
         return
     html = INDEX_FILE.read_text(encoding="utf-8")
-    html = re.sub(r'(<a href="\./\d+w\.html">[^<]*?) — 최신', r'\1', html, count=1)
-    if f'href="./{week}w.html"' in html:
-        return
-    new_entry = (
-        f'\n  <li>\n'
-        f'    <a href="./{week}w.html">{week}주차 ({range_str}) — 최신</a>\n'
-        f'    <div class="desc">자동 갱신 {NOW.strftime("%Y-%m-%d %H:%M KST")}</div>\n'
-        f'  </li>'
-    )
-    html = re.sub(r'(<ul class="list">)', r'\1' + new_entry, html, count=1)
-    INDEX_FILE.write_text(html, encoding="utf-8")
-
-
-# ---------- 메인 ----------
-def main():
-    print(f"=== Weekly Briefing Update — {NOW.isoformat()} ===")
-    year, week, week_monday, week_sunday, range_str = get_reporting_week()
-    print(f"Reporting week: {year} W{week} ({range_str})")
-
-    obs = load_observations()
-    target_date = week_sunday.isoformat()
-
-    print("\n--- 데이터 수집 시도 ---")
-    fetched_keys = []
-
-    val = fetch_naver_exchange("USD")
-    if val:
-        print(f"  USD/KRW: {val}")
-        if append_observation(obs, "usdkrw", target_date, val):
-            fetched_keys.append("usdkrw")
-            print(f"    -> 추가: {target_date}")
-    time.sleep(1)
-
-    val = fetch_naver_exchange("CNY")
-    if val:
-        print(f"  CNY/KRW: {val}")
-        if append_observation(obs, "cnykrw", target_date, val):
-            fetched_keys.append("cnykrw")
-            print(f"    -> 추가: {target_date}")
-    time.sleep(1)
-
-    val = fetch_naver_stock("066570")
-    if val:
-        print(f"  LG전자: {val}")
-        if append_observation(obs, "lge", target_date, val):
-            fetched_keys.append("lge")
-            print(f"    -> 추가: {target_date}")
-
-    print(f"\n총 {len(fetched_keys)}개 신규 관측점 추가: {fetched_keys}")
-
-    for key in fetched_keys:
-        ind = obs["indicators"].get(key)
-        if ind:
-            auto_update_meta(ind)
-            ind["badge_text"] = f"{week_sunday.strftime('%m/%d')} 일"
-            ind["badge"] = "fresh"
-
-    obs["metadata"] = {
-        **obs.get("metadata", {}),
-        "updated_at": NOW.isoformat(),
-        "reporting_week": week,
-        "year": year,
-        "auto_run": True,
-        "last_fetched": fetched_keys,
-    }
-    save_observations(obs)
-    print(f"saved {DATA_FILE.relative_to(REPO_ROOT)}")
-
-    html = render_html(obs, year, week, range_str)
-    output_path = DOCS_DIR / f"{week}w.html"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(html, encoding="utf-8")
-    print(f"generated {output_path.relative_to(REPO_ROOT)}")
-
-    update_index(year, week, range_str)
-    print(f"updated {INDEX_FILE.relative_to(REPO_ROOT)}")
-
-    print("\n=== Done ===")
-
-
-if __name__ == "__main__":
-    main()
