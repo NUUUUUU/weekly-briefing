@@ -47,7 +47,16 @@ jobs:
         env:
           TZ: Asia/Seoul
           WEEK_OVERRIDE: ${{ github.event.inputs.week_override }}
-        run: python scripts/update_weekly.py
+        run: python -u scripts/update_weekly.py
+
+      - name: Debug - list files after Python
+        run: |
+          echo "=== docs/ ==="
+          ls -la docs/ || true
+          echo "=== data/ ==="
+          ls -la data/ || true
+          echo "=== git status ==="
+          git status --short
 
       - name: Commit and push if changed
         run: |

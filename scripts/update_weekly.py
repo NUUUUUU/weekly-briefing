@@ -1,4 +1,14 @@
 #!/usr/bin/env python3
+import sys
+print(">>> SCRIPT START <<<", flush=True)
+print(f">>> Python: {sys.version}", flush=True)
+print(f">>> argv: {sys.argv}", flush=True)
+print(f">>> cwd: ", flush=True)
+import os
+print(f">>> {os.getcwd()}", flush=True)
+print(f">>> env WEEK_OVERRIDE: {os.environ.get('WEEK_OVERRIDE', '(unset)')}", flush=True)
+print(f">>> env TZ: {os.environ.get('TZ', '(unset)')}", flush=True)
+print(">>> Importing main module...", flush=True)
 # v2.2 - re-trigger with explicit debug logs
 """
 Weekly Briefing Auto-Update Script
