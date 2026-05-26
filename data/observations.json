@@ -1,12 +1,16 @@
 {
   "metadata": {
-    "updated_at": "2026-05-26T12:35:12.022409+09:00",
-    "reporting_week": 23,
+    "updated_at": "2026-05-26T13:38:57.497327+09:00",
+    "reporting_week": 22,
     "year": 2026,
     "schema_version": 1,
     "seeded_from": "22w.html",
     "auto_run": true,
-    "last_fetched": [],
+    "last_fetched": [
+      "usdkrw",
+      "cnykrw",
+      "lge"
+    ],
     "rollback_note": "5/31 USD=1.0/CNY=2.0 잘못된 파싱 결과 제거, 패치 v2 적용"
   },
   "indicators": {
@@ -14,9 +18,9 @@
       "label": "USD/KRW",
       "color": "#2563eb",
       "monthly_only": false,
-      "meta": "최신 1.0 (2026-05-31) · 전 1,517.2 (▼-1516.20) · (자동)",
+      "meta": "최신 1,506.1 (2026-05-24) · 전 1,517.2 (▼-11.10) · (자동)",
       "badge": "fresh",
-      "badge_text": "05/31 일",
+      "badge_text": "05/24 D",
       "links": [
         {
           "text": "Investing.com 과거데이터",
@@ -69,6 +73,11 @@
           "date": "2026-05-22",
           "value": 1517.2,
           "observed": true
+        },
+        {
+          "date": "2026-05-24",
+          "value": 1506.1,
+          "observed": true
         }
       ]
     },
@@ -76,9 +85,9 @@
       "label": "CNY/KRW",
       "color": "#dc2626",
       "monthly_only": false,
-      "meta": "최신 2.0 (2026-05-31) · 전 223.14 (▼-221.14) · (자동)",
+      "meta": "최신 250.0 (2026-05-24) · 전 223.14 (▲+26.86) · (자동)",
       "badge": "fresh",
-      "badge_text": "05/31 일",
+      "badge_text": "05/24 D",
       "links": [
         {
           "text": "Investing.com 과거데이터",
@@ -121,6 +130,11 @@
         {
           "date": "2026-05-22",
           "value": 223.14,
+          "observed": true
+        },
+        {
+          "date": "2026-05-24",
+          "value": 250.0,
           "observed": true
         }
       ]
@@ -359,9 +373,9 @@
       "label": "LG전자",
       "color": "#ea580c",
       "monthly_only": false,
-      "meta": "최신 240,750 (2026-05-31) · 전 237,000 (▲+3750.00) · (자동)",
+      "meta": "최신 240,750 (2026-05-31) · 전 239,000 (▲+1750.00) · (자동)",
       "badge": "fresh",
-      "badge_text": "05/31 일",
+      "badge_text": "05/24 D",
       "links": [
         {
           "text": "조선비즈 — 5월 +74.5%",
@@ -409,6 +423,11 @@
         {
           "date": "2026-05-22",
           "value": 237000,
+          "observed": true
+        },
+        {
+          "date": "2026-05-24",
+          "value": 239000,
           "observed": true
         },
         {
