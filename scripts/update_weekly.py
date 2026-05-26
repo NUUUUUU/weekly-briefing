@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# v2.1 - manual re-run trigger (defensive scraper validation)
+# v2.2 - re-trigger with explicit debug logs
 """
 Weekly Briefing Auto-Update Script
 실행: GitHub Actions가 매주 월요일 08:10 KST에 호출.
