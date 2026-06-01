@@ -1,11 +1,10 @@
 {
   "year": 2026,
-  "week": 22,
-  "range": "05/18~05/24",
-  "timestamp": "2026-05-26T13:38:57.497327+09:00",
+  "week": 23,
+  "range": "05/25~05/31",
+  "timestamp": "2026-06-01T09:14:01.833601+09:00",
   "fetched_keys": [
     "usdkrw",
-    "cnykrw",
-    "lge"
+    "cnykrw"
   ]
 }
