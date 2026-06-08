@@ -9,17 +9,23 @@
   body { font-family: -apple-system, "Pretendard", "Apple SD Gothic Neo", "맑은 고딕", sans-serif; background: #ffffff; color: #1f2937; margin: 0; padding: 16px; max-width: 1400px; margin: 0 auto; }
   h1 { font-size: 18px; margin: 0 0 4px 0; }
   .sub { color: #6b7280; font-size: 12px; margin-bottom: 16px; }
-  .toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
-  .toolbar select, .toolbar button { padding: 6px 10px; border: 1px solid #d1d5db; background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer; }
+  .toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; padding: 10px 12px; background: #f9fafb; border-radius: 8px; }
+  .toolbar-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .toolbar .label { font-size: 12px; color: #374151; font-weight: 600; min-width: 80px; }
+  .toolbar select, .toolbar button { padding: 6px 12px; border: 1px solid #d1d5db; background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .toolbar button:hover { border-color: #1f2937; }
   .toolbar button.active { background: #1f2937; color: #fff; border-color: #1f2937; }
+  .toolbar button.country-btn.active { background: #2563eb; border-color: #2563eb; }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 12px; }
-  .card { border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px; background: #fff; position: relative; }
+  .card { border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px; background: #fff; position: relative; transition: opacity 0.2s; }
+  .card.hidden { display: none; }
   .card h3 { margin: 0 0 4px 0; font-size: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; }
   .badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; }
   .badge.fresh { background: #dcfce7; color: #166534; }
   .badge.stale { background: #fef3c7; color: #92400e; }
   .badge.lag { background: #fee2e2; color: #991b1b; }
   .badge.monthly-only { background: #e0e7ff; color: #3730a3; }
+  .badge.country { background: #ede9fe; color: #6b21a8; font-weight: 600; }
   .meta { font-size: 11px; color: #6b7280; margin-bottom: 8px; }
   .canvas-wrap { height: 180px; position: relative; }
   .empty-note { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 11px; color: #9ca3af; text-align: center; }
@@ -30,46 +36,59 @@
   .note.warn { border-left-color: #f59e0b; background: #fffbeb; color: #78350f; }
   .footer { margin-top: 16px; font-size: 11px; color: #6b7280; padding-top: 10px; border-top: 1px solid #e5e7eb; }
   .point-count { font-size: 10px; color: #9ca3af; margin-top: 2px; }
+  .summary-bar { display: flex; gap: 8px; font-size: 11px; color: #6b7280; margin-bottom: 8px; padding: 6px 12px; background: #fefce8; border-left: 3px solid #ca8a04; border-radius: 4px; }
 </style>
 </head>
 <body>
 <h1>📊 주간 매크로 · 원가 스코어카드 — __WEEK__주차 (__RANGE__)</h1>
-<div class="sub">공개 매크로 지표 · 갱신 __UPDATED_AT__ · 토글 = 실제 관측치 집계 (일별 / 주별 마지막값 / 월별 마지막값) · 자동 빌드</div>
+<div class="sub">공개 매크로 지표 · 갱신 __UPDATED_AT__ · 12개 지표 · 5개 국가 분류 · 매주 월요일 자동 갱신</div>
 
 <div class="toolbar">
-  <span style="font-size:12px;color:#374151;">표시 단위:</span>
-  <button data-period="day" class="period-btn active">일별</button>
-  <button data-period="week" class="period-btn">주별</button>
-  <button data-period="month" class="period-btn">월별</button>
-  <span style="margin-left:12px;font-size:12px;color:#374151;">기간:</span>
-  <select id="rangeSel">
-    <option value="6">최근 6개월</option>
-    <option value="3">최근 3개월</option>
-    <option value="1">최근 1개월</option>
-  </select>
-  <span id="statusMsg" style="font-size:11px;color:#6b7280;margin-left:auto;"></span>
+  <div class="toolbar-row">
+    <span class="label">🌏 국가:</span>
+    <button data-country="ALL" class="country-btn active">전체</button>
+    <button data-country="KR" class="country-btn">🇰🇷 한국</button>
+    <button data-country="CN" class="country-btn">🇨🇳 중국</button>
+    <button data-country="TH" class="country-btn">🇹🇭 태국</button>
+    <button data-country="EG" class="country-btn">🇪🇬 이집트</button>
+  </div>
+  <div class="toolbar-row">
+    <span class="label">📅 기간:</span>
+    <button data-range="6" class="range-btn">최근 6개월</button>
+    <button data-range="12" class="range-btn">최근 1년</button>
+    <button data-range="24" class="range-btn active">최근 2년</button>
+  </div>
+  <div class="toolbar-row">
+    <span class="label">⏱ 단위:</span>
+    <button data-period="day" class="period-btn">일별</button>
+    <button data-period="week" class="period-btn">주별</button>
+    <button data-period="month" class="period-btn active">월별</button>
+  </div>
 </div>
 
-<div class="grid">
+<div class="summary-bar" id="summaryBar">전체 12개 지표 표시 중 · 최근 2년 · 월별 보기</div>
+
+<div class="grid" id="grid">
 __CARDS__
 </div>
 
 <div class="footer">
-  <strong>데이터 출처</strong>: ① 한국은행 ECOS / ② Naver Finance·Investing.com / ③ 하나증권 철강금속 Weekly / ④ LME / ⑤ S&amp;P Global·NBS.
-  <strong>신선도 배지</strong>: 🟢 당주 관측 / 🟡 직전 월·관측 / 🔴 미수집(추정).
-  <strong>토글 동작</strong>: 주별 = 각 ISO 주의 마지막 관측치 / 월별 = 각 월의 마지막 관측치.
-  <strong>빌드</strong>: GitHub Actions 자동 갱신 (매주 월요일 08:10 KST) — <a href="https://github.com/NUUUUUU/weekly-briefing" target="_blank">repo</a>
+  <strong>데이터 출처</strong>: ① 한국은행 ECOS · Naver Finance / ② S&amp;P Global PMI · Trading Economics / ③ 하나증권 철강금속 Weekly / ④ LME / ⑤ KRX · OpenDART.
+  <strong>토글 동작</strong>: 국가 필터 즉시 카드 표시/숨김 / 기간·단위 토글 = 데이터 재집계.
+  <strong>관측치/추정</strong>: 진한 점 = 직접 관측, 회색 점 = 보간·추정.
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"></script>
 <script>
 const RAW = __RAW_DATA__;
 const CARDS = __CARDS_CONFIG__;
+const COUNTRIES = {"ALL":"전체","KR":"🇰🇷 한국","CN":"🇨🇳 중국","TH":"🇹🇭 태국","EG":"🇪🇬 이집트"};
 
 const TODAY = new Date('__TODAY__T00:00:00');
 const chartInstances = {};
-let currentPeriod = 'day';
-let currentRange = 6;
+let currentPeriod = 'month';
+let currentRange = 24;
+let currentCountry = 'ALL';
 
 function parseDate(s) {
   if (s.length === 7) return new Date(s + '-01T00:00:00');
@@ -126,11 +145,10 @@ function renderChart(canvasId) {
     pcEl.textContent = `점 ${total}개 (관측 ${obs}) · 보기: ${viewLabel}`;
   }
 
-  if (chartInstances[canvasId]) {
-    chartInstances[canvasId].destroy();
-  }
+  if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
 
   const ctx = document.getElementById(canvasId);
+  if (!ctx) return;
   if (data.length === 0) {
     const parent = ctx.parentElement;
     let note = parent.querySelector('.empty-note');
@@ -174,24 +192,61 @@ function renderChart(canvasId) {
         }
       },
       scales: {
-        x: { ticks: { font: { size: 9 }, color: "#6b7280" }, grid: { display: false } },
+        x: { ticks: { font: { size: 9 }, color: "#6b7280", maxRotation: 0, autoSkipPadding: 20 }, grid: { display: false } },
         y: { ticks: { font: { size: 10 }, color: "#6b7280" }, grid: { color: "#f3f4f6" } }
       }
     }
   });
 }
 
+function applyCountryFilter() {
+  let visible = 0;
+  Object.keys(CARDS).forEach(canvasId => {
+    const cfg = CARDS[canvasId];
+    const card = document.getElementById('card_' + cfg.key);
+    if (!card) return;
+    // ALL 국가 지표(LME 등)는 항상 표시. 그 외엔 선택한 국가와 일치하는지
+    const show = (currentCountry === 'ALL') || (cfg.country === currentCountry) || (cfg.country === 'ALL');
+    card.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+  updateSummaryBar(visible);
+}
+
+function updateSummaryBar(visibleCount) {
+  const bar = document.getElementById('summaryBar');
+  if (!bar) return;
+  const countryLabel = COUNTRIES[currentCountry] || currentCountry;
+  const periodLabel = currentPeriod === 'day' ? '일별' : currentPeriod === 'week' ? '주별' : '월별';
+  bar.textContent = `${countryLabel} ${visibleCount}개 지표 표시 중 · 최근 ${currentRange}개월 · ${periodLabel} 보기`;
+}
+
 function renderAll() {
   Object.keys(CARDS).forEach(renderChart);
-  const status = document.getElementById('statusMsg');
-  if (status) {
-    const viewLabel = currentPeriod === 'day' ? '일별' : currentPeriod === 'week' ? '주별 (주 마지막값)' : '월별 (월 마지막값)';
-    status.textContent = `보기: ${viewLabel} · 기간: 최근 ${currentRange}개월`;
-  }
+  applyCountryFilter();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   renderAll();
+
+  document.querySelectorAll('.country-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.country-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      currentCountry = b.dataset.country;
+      applyCountryFilter();
+    });
+  });
+
+  document.querySelectorAll('.range-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.range-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      currentRange = parseInt(b.dataset.range, 10);
+      renderAll();
+    });
+  });
+
   document.querySelectorAll('.period-btn').forEach(b => {
     b.addEventListener('click', () => {
       document.querySelectorAll('.period-btn').forEach(x => x.classList.remove('active'));
@@ -199,10 +254,6 @@ window.addEventListener('DOMContentLoaded', () => {
       currentPeriod = b.dataset.period;
       renderAll();
     });
-  });
-  document.getElementById('rangeSel').addEventListener('change', e => {
-    currentRange = parseInt(e.target.value, 10);
-    renderAll();
   });
 });
 </script>
