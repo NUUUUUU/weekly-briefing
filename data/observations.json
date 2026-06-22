@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "updated_at": "2026-06-15T09:21:07.834887+09:00",
-    "reporting_week": 25,
+    "updated_at": "2026-06-22T09:19:54.858391+09:00",
+    "reporting_week": 26,
     "year": 2026,
     "schema_version": 2,
     "schema_notes": "v2: country 필드 추가, 2년치 월별 데이터 (2024-06 ~ 2026-05), 태국·이집트 PMI 신규 추가",
@@ -25,9 +25,9 @@
       "country": "KR",
       "color": "#2563eb",
       "monthly_only": false,
-      "meta": "최신 1,505.1 (2026-06-14) · 전 1,550.3 (▼-45.20) · (자동)",
+      "meta": "최신 1,530.4 (2026-06-21) · 전 1,505.1 (▲+25.30) · (자동)",
       "badge": "fresh",
-      "badge_text": "06/14 D",
+      "badge_text": "06/21 D",
       "links": [
         {
           "text": "Investing.com 과거데이터",
@@ -179,6 +179,11 @@
           "date": "2026-06-14",
           "value": 1505.1,
           "observed": true
+        },
+        {
+          "date": "2026-06-21",
+          "value": 1530.4,
+          "observed": true
         }
       ]
     },
@@ -187,9 +192,9 @@
       "country": "CN",
       "color": "#dc2626",
       "monthly_only": false,
-      "meta": "최신 250.0 (2026-06-14) · 전 250.0 (→+0.00) · (자동)",
+      "meta": "최신 250.0 (2026-06-21) · 전 250.0 (→+0.00) · (자동)",
       "badge": "fresh",
-      "badge_text": "06/14 D",
+      "badge_text": "06/21 D",
       "links": [
         {
           "text": "Investing.com 과거데이터",
@@ -280,6 +285,11 @@
         },
         {
           "date": "2026-06-14",
+          "value": 250.0,
+          "observed": true
+        },
+        {
+          "date": "2026-06-21",
           "value": 250.0,
           "observed": true
         }
@@ -652,9 +662,9 @@
       "country": "KR",
       "color": "#ea580c",
       "monthly_only": false,
-      "meta": "최신 257,000 (2026-06-14) · 전 267,500 (▼-10500.00) · (자동)",
+      "meta": "최신 227,500 (2026-06-21) · 전 257,000 (▼-29500.00) · (자동)",
       "badge": "fresh",
-      "badge_text": "06/14 D",
+      "badge_text": "06/21 D",
       "links": [
         {
           "text": "조선비즈 — 5월 +74.5%",
@@ -741,6 +751,11 @@
         {
           "date": "2026-06-14",
           "value": 257000,
+          "observed": true
+        },
+        {
+          "date": "2026-06-21",
+          "value": 227500,
           "observed": true
         }
       ]
