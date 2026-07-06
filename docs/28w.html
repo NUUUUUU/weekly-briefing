@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>주간 매크로 스코어카드 — 28주차 (06/29~07/05)</title>
+<style>
+  :root { color-scheme: light; }
+  body { font-family: -apple-system, "Pretendard", "Apple SD Gothic Neo", "맑은 고딕", sans-serif; background: #ffffff; color: #1f2937; margin: 0; padding: 16px; max-width: 1400px; margin: 0 auto; }
+  h1 { font-size: 18px; margin: 0 0 4px 0; }
+  .sub { color: #6b7280; font-size: 12px; margin-bottom: 16px; }
+  .toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; padding: 10px 12px; background: #f9fafb; border-radius: 8px; }
+  .toolbar-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .toolbar .label { font-size: 12px; color: #374151; font-weight: 600; min-width: 80px; }
+  .toolbar select, .toolbar button { padding: 6px 12px; border: 1px solid #d1d5db; background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .toolbar button:hover { border-color: #1f2937; }
+  .toolbar button.active { background: #1f2937; color: #fff; border-color: #1f2937; }
+  .toolbar button.country-btn.active { background: #2563eb; border-color: #2563eb; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 12px; }
+  .card { border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px; background: #fff; position: relative; transition: opacity 0.2s; }
+  .card.hidden { display: none; }
+  .card h3 { margin: 0 0 4px 0; font-size: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; }
+  .badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; }
+  .badge.fresh { background: #dcfce7; color: #166534; }
+  .badge.stale { background: #fef3c7; color: #92400e; }
+  .badge.lag { background: #fee2e2; color: #991b1b; }
+  .badge.monthly-only { background: #e0e7ff; color: #3730a3; }
+  .badge.country { background: #ede9fe; color: #6b21a8; font-weight: 600; }
+  .meta { font-size: 11px; color: #6b7280; margin-bottom: 8px; }
+  .canvas-wrap { height: 180px; position: relative; }
+  .empty-note { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 11px; color: #9ca3af; text-align: center; }
+  .links { font-size: 11px; margin-top: 8px; }
+  .links a { color: #2563eb; text-decoration: none; margin-right: 8px; }
+  .links a:hover { text-decoration: underline; }
+  .note { font-size: 11px; color: #6b7280; margin-top: 6px; padding: 6px 8px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #d1d5db; }
+  .note.warn { border-left-color: #f59e0b; background: #fffbeb; color: #78350f; }
+  .footer { margin-top: 16px; font-size: 11px; color: #6b7280; padding-top: 10px; border-top: 1px solid #e5e7eb; }
+  .point-count { font-size: 10px; color: #9ca3af; margin-top: 2px; }
+  .summary-bar { display: flex; gap: 8px; font-size: 11px; color: #6b7280; margin-bottom: 8px; padding: 6px 12px; background: #fefce8; border-left: 3px solid #ca8a04; border-radius: 4px; }
+</style>
+</head>
+<body>
+<h1>📊 주간 매크로 · 원가 스코어카드 — 28주차 (06/29~07/05)</h1>
+<div class="sub">공개 매크로 지표 · 갱신 2026-07-06 09:14 KST · 12개 지표 · 5개 국가 분류 · 매주 월요일 자동 갱신</div>
+
+<div class="toolbar">
+  <div class="toolbar-row">
+    <span class="label">🌏 국가:</span>
+    <button data-country="ALL" class="country-btn active">전체</button>
+    <button data-country="KR" class="country-btn">🇰🇷 한국</button>
+    <button data-country="CN" class="country-btn">🇨🇳 중국</button>
+    <button data-country="TH" class="country-btn">🇹🇭 태국</button>
+    <button data-country="EG" class="country-btn">🇪🇬 이집트</button>
+  </div>
+  <div class="toolbar-row">
+    <span class="label">📅 기간:</span>
+    <button data-range="6" class="range-btn">최근 6개월</button>
+    <button data-range="12" class="range-btn">최근 1년</button>
+    <button data-range="24" class="range-btn active">최근 2년</button>
+  </div>
+  <div class="toolbar-row">
+    <span class="label">⏱ 단위:</span>
+    <button data-period="day" class="period-btn">일별</button>
+    <button data-period="week" class="period-btn">주별</button>
+    <button data-period="month" class="period-btn active">월별</button>
+  </div>
+</div>
+
+<div class="summary-bar" id="summaryBar">전체 12개 지표 표시 중 · 최근 2년 · 월별 보기</div>
+
+<div class="grid" id="grid">
+  <div class="card" id="card_usdkrw" data-country="KR">
+    <h3>USD/KRW <span class="badge country">🇰🇷</span><span class="badge fresh">07/05 D</span></h3>
+    <div class="meta">최신 1,536.2 (2026-07-05) · 전 1,539.5 (▼-3.30) · (자동)</div>
+    <div class="canvas-wrap"><canvas id="ch_usdkrw"></canvas></div>
+    <div class="point-count" id="pc_usdkrw"></div>
+    <div class="links"><a href="https://kr.investing.com/currencies/usd-krw-historical-data" target="_blank">Investing.com 과거데이터</a> <a href="https://snapshot.bok.or.kr/?en=y" target="_blank">한국은행 ECOS</a></div>
+    <div class="note">월말 종가 기준 (24개월). 5월은 일별 관측치.</div>
+  </div>
+  <div class="card" id="card_cnykrw" data-country="CN">
+    <h3>CNY/KRW <span class="badge country">🇨🇳</span><span class="badge fresh">07/05 D</span></h3>
+    <div class="meta">최신 250.0 (2026-07-05) · 전 250.0 (→+0.00) · (자동)</div>
+    <div class="canvas-wrap"><canvas id="ch_cnykrw"></canvas></div>
+    <div class="point-count" id="pc_cnykrw"></div>
+    <div class="links"><a href="https://kr.investing.com/currencies/cny-krw-historical-data" target="_blank">Investing.com 과거데이터</a></div>
+    <div class="note">월말 종가 기준. 위안화 동반 강세 추세.</div>
+  </div>
+  <div class="card" id="card_thbkrw" data-country="TH">
+    <h3>THB/KRW <span class="badge country">🇹🇭</span><span class="badge lag">직전 추정</span></h3>
+    <div class="meta">최신 ≈46.5원 (직전 추정)</div>
+    <div class="canvas-wrap"><canvas id="ch_thbkrw"></canvas></div>
+    <div class="point-count" id="pc_thbkrw"></div>
+    <div class="links"><a href="https://kr.investing.com/currencies/thb-krw-converter" target="_blank">Investing.com THB/KRW</a></div>
+    <div class="note">⚠ 자동 수집 미연동, 추후 ECOS API 연결 권고</div>
+  </div>
+  <div class="card" id="card_usdegp" data-country="EG">
+    <h3>USD/EGP <span class="badge country">🇪🇬</span><span class="badge fresh">5/25 일</span></h3>
+    <div class="meta">최신 52.28 · 1년 -4.98% EGP 약세</div>
+    <div class="canvas-wrap"><canvas id="ch_usdegp"></canvas></div>
+    <div class="point-count" id="pc_usdegp"></div>
+    <div class="links"><a href="https://tradingeconomics.com/egypt/currency" target="_blank">Trading Economics</a> <a href="https://www.cbe.org.eg/en/" target="_blank">이집트 중앙은행 CBE</a></div>
+    <div class="note">2024-03 IMF EFF 발효 후 변동환율 도입 → 급격한 약세</div>
+  </div>
+  <div class="card" id="card_hrc" data-country="KR">
+    <h3>HRC 열연 (국내 유통, 만원/t) <span class="badge country">🇰🇷</span><span class="badge fresh">5/8 주</span></h3>
+    <div class="meta">최신 96만원 (5/8, 100만원 임계 접근)</div>
+    <div class="canvas-wrap"><canvas id="ch_hrc"></canvas></div>
+    <div class="point-count" id="pc_hrc"></div>
+    <div class="links"><a href="https://www.laborplus.co.kr/news/articleView.html?idxno=40813" target="_blank">하나증권 Weekly</a> <a href="https://n.news.naver.com/mnews/article/018/0006268842" target="_blank">이데일리 — 포스코 2Q 인상</a></div>
+    <div class="note">주간 지표. 100만원 돌파 시 가공원가 임계 신호.</div>
+  </div>
+  <div class="card" id="card_crc" data-country="KR">
+    <h3>CRC 냉연 인상폭 (만원/t) <span class="badge country">🇰🇷</span><span class="badge stale">분기 W</span></h3>
+    <div class="meta">2Q +5만원/t 인상 (포스코)</div>
+    <div class="canvas-wrap"><canvas id="ch_crc"></canvas></div>
+    <div class="point-count" id="pc_crc"></div>
+    <div class="links"><a href="https://n.news.naver.com/mnews/article/018/0006268842" target="_blank">2Q 인상 발표 (이데일리)</a></div>
+    <div class="note">분기 단위 인상폭. CRC 출하단가 기준.</div>
+  </div>
+  <div class="card" id="card_alu" data-country="ALL">
+    <h3>LME 알루미늄 3M (USD/t) <span class="badge country">전체</span><span class="badge fresh">5/13 일</span></h3>
+    <div class="meta">$3,653.85 (5/13, 4년래 최고)</div>
+    <div class="canvas-wrap"><canvas id="ch_alu"></canvas></div>
+    <div class="point-count" id="pc_alu"></div>
+    <div class="links"><a href="https://kidd.co.kr/news/246132" target="_blank">구리·알루미늄 시황</a> <a href="https://n.news.naver.com/mnews/article/016/0002647124" target="_blank">알루미늄 4년래 최고 (헤럴드)</a></div>
+    <div class="note">인니 감산·재고 -33% 영향 누증</div>
+  </div>
+  <div class="card" id="card_lge" data-country="KR">
+    <h3>LG전자 주가 (KRW) <span class="badge country">🇰🇷</span><span class="badge fresh">07/05 D</span></h3>
+    <div class="meta">최신 190,300 (2026-07-05) · 전 188,000 (▲+2300.00) · (자동)</div>
+    <div class="canvas-wrap"><canvas id="ch_lge"></canvas></div>
+    <div class="point-count" id="pc_lge"></div>
+    <div class="links"><a href="https://n.news.naver.com/mnews/article/366/0001166882" target="_blank">조선비즈 — 5월 +74.5%</a></div>
+    <div class="note">5월 변동성 확대. AI·로봇 신사업 모멘텀.</div>
+  </div>
+  <div class="card" id="card_kpmi" data-country="KR">
+    <h3>한국 제조업 PMI <span class="badge country">🇰🇷</span><span class="badge stale">4월 월</span><span class="badge monthly-only">월간</span></h3>
+    <div class="meta">4월 53.6 (17개월래 최고)</div>
+    <div class="canvas-wrap"><canvas id="ch_kpmi"></canvas></div>
+    <div class="point-count" id="pc_kpmi"></div>
+    <div class="links"><a href="https://tradingeconomics.com/south-korea/manufacturing-pmi" target="_blank">Trading Economics 한국 PMI</a></div>
+    <div class="note">월간 지표. 50 = 경기 분기점.</div>
+  </div>
+  <div class="card" id="card_cpmi" data-country="CN">
+    <h3>중국 차이신 PMI <span class="badge country">🇨🇳</span><span class="badge fresh">5월 월</span><span class="badge monthly-only">월간</span></h3>
+    <div class="meta">5월 51.8 / 4월 52.2 (확장 6개월 연속)</div>
+    <div class="canvas-wrap"><canvas id="ch_cpmi"></canvas></div>
+    <div class="point-count" id="pc_cpmi"></div>
+    <div class="links"><a href="https://tradingeconomics.com/china/manufacturing-pmi" target="_blank">Trading Economics 중국 PMI</a></div>
+    <div class="note">차이신(레이팅도그) 기준. 6개월 연속 50선 위.</div>
+  </div>
+  <div class="card" id="card_tpmi" data-country="TH">
+    <h3>태국 제조업 PMI <span class="badge country">🇹🇭</span><span class="badge fresh">4월 월</span><span class="badge monthly-only">월간</span></h3>
+    <div class="meta">4월 52.7 (확장 12개월 연속)</div>
+    <div class="canvas-wrap"><canvas id="ch_tpmi"></canvas></div>
+    <div class="point-count" id="pc_tpmi"></div>
+    <div class="links"><a href="https://tradingeconomics.com/thailand/manufacturing-pmi" target="_blank">Trading Economics 태국 PMI</a> <a href="https://www.pmi.spglobal.com/Public/Home/PressRelease/f23db0d4dd1343e8bef893870167e671" target="_blank">S&amp;P Global Thailand PMI</a></div>
+    <div class="note">S&amp;P Global 기준. BYD 라용 효과 등 EV 모멘텀.</div>
+  </div>
+  <div class="card" id="card_epmi" data-country="EG">
+    <h3>이집트 비석유 PMI <span class="badge country">🇪🇬</span><span class="badge fresh">5월 월</span><span class="badge monthly-only">월간</span></h3>
+    <div class="meta">5월 47.1 (5개월 연속 수축)</div>
+    <div class="canvas-wrap"><canvas id="ch_epmi"></canvas></div>
+    <div class="point-count" id="pc_epmi"></div>
+    <div class="links"><a href="https://tradingeconomics.com/egypt/manufacturing-pmi" target="_blank">Trading Economics 이집트 PMI</a> <a href="https://www.pmi.spglobal.com/Public/Home/PressRelease/65d5caaba994437da3d5c020c732d171" target="_blank">S&amp;P Global Egypt PMI</a></div>
+    <div class="note">S&amp;P Global 비석유 민간부문 PMI. 2024-03 IMF EFF 이후 변동성↑.</div>
+  </div>
+</div>
+
+<div class="footer">
+  <strong>데이터 출처</strong>: ① 한국은행 ECOS · Naver Finance / ② S&amp;P Global PMI · Trading Economics / ③ 하나증권 철강금속 Weekly / ④ LME / ⑤ KRX · OpenDART.
+  <strong>토글 동작</strong>: 국가 필터 즉시 카드 표시/숨김 / 기간·단위 토글 = 데이터 재집계.
+  <strong>관측치/추정</strong>: 진한 점 = 직접 관측, 회색 점 = 보간·추정.
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"></script>
+<script>
+const RAW = {"usdkrw": {"daily": [["2024-06-30", 1376, false], ["2024-07-31", 1380, false], ["2024-08-31", 1345, false], ["2024-09-30", 1310, false], ["2024-10-31", 1380, false], ["2024-11-30", 1395, false], ["2024-12-31", 1471, true], ["2025-01-31", 1455, false], ["2025-02-28", 1445, false], ["2025-03-31", 1467, false], ["2025-04-30", 1430, false], ["2025-05-31", 1395, false], ["2025-06-30", 1370, false], ["2025-07-31", 1383, false], ["2025-08-31", 1390, false], ["2025-09-30", 1414, false], ["2025-10-31", 1428, false], ["2025-11-30", 1465, false], ["2025-12-31", 1450, false], ["2026-01-31", 1470, false], ["2026-02-28", 1490, false], ["2026-03-31", 1495, false], ["2026-04-30", 1485, false], ["2026-05-21", 1506.1, true], ["2026-05-22", 1517.2, true], ["2026-05-24", 1506.1, true], ["2026-06-07", 1550.3, true], ["2026-06-14", 1505.1, true], ["2026-06-21", 1530.4, true], ["2026-06-28", 1539.5, true], ["2026-07-05", 1536.2, true]]}, "cnykrw": {"daily": [["2024-06-30", 189, false], ["2024-09-30", 187, false], ["2024-12-31", 201, false], ["2025-03-31", 202, false], ["2025-06-30", 191, false], ["2025-09-30", 199, false], ["2025-12-31", 198, false], ["2026-01-31", 202, false], ["2026-02-28", 205, false], ["2026-03-31", 207, false], ["2026-04-30", 210, false], ["2026-05-15", 218, false], ["2026-05-21", 221.29, true], ["2026-05-22", 223.14, true], ["2026-05-24", 250.0, true], ["2026-06-07", 250.0, true], ["2026-06-14", 250.0, true], ["2026-06-21", 250.0, true], ["2026-06-28", 250.0, true], ["2026-07-05", 250.0, true]]}, "thbkrw": {"daily": [["2024-06-30", 37.5, false], ["2024-12-31", 43.1, false], ["2025-06-30", 41.8, false], ["2025-12-31", 42.7, false], ["2026-02-28", 43.5, false], ["2026-04-30", 44.5, false], ["2026-05-15", 46.0, false], ["2026-05-22", 46.5, false]]}, "usdegp": {"daily": [["2024-06-30", 47.8, false], ["2024-09-30", 48.5, false], ["2024-12-31", 50.9, false], ["2025-03-31", 50.6, false], ["2025-06-30", 49.5, false], ["2025-09-30", 48.4, false], ["2025-12-31", 50.5, false], ["2026-01-15", 50.7, false], ["2026-02-15", 50.9, false], ["2026-03-15", 51.5, false], ["2026-04-15", 51.9, false], ["2026-05-25", 52.28, true]]}, "hrc": {"daily": [["2024-06-30", 85, false], ["2024-09-30", 82, false], ["2024-12-31", 84, false], ["2025-03-31", 86, false], ["2025-06-30", 88, false], ["2025-09-30", 87, false], ["2025-12-31", 88, false], ["2026-01-31", 88, false], ["2026-02-28", 91, false], ["2026-04-22", 95, false], ["2026-05-01", 95, true], ["2026-05-08", 96, true]]}, "crc": {"daily": [["2024-07-01", 0, false], ["2024-10-01", 2, false], ["2025-01-01", 3, false], ["2025-04-01", 0, false], ["2025-07-01", 2, false], ["2025-10-01", 3, false], ["2026-01-01", 0, false], ["2026-04-29", 5, true]]}, "alu": {"daily": [["2024-06-30", 2520, false], ["2024-09-30", 2620, false], ["2024-12-31", 2540, false], ["2025-03-31", 2750, false], ["2025-06-30", 2640, false], ["2025-09-30", 2720, false], ["2025-12-31", 2780, false], ["2026-01-31", 2900, false], ["2026-02-28", 3050, false], ["2026-03-31", 3200, false], ["2026-04-30", 3400, false], ["2026-05-13", 3653.85, true]]}, "lge": {"daily": [["2024-06-30", 95000, false], ["2024-09-30", 90000, false], ["2024-12-31", 88000, false], ["2025-03-31", 82000, false], ["2025-06-30", 88000, false], ["2025-09-30", 100000, false], ["2025-12-31", 90000, false], ["2026-01-23", 105600, true], ["2026-02-13", 191400, true], ["2026-03-31", 150000, false], ["2026-04-30", 135800, true], ["2026-05-18", 217000, true], ["2026-05-22", 237000, true], ["2026-05-24", 240750, true], ["2026-06-07", 267500, true], ["2026-06-14", 257000, true], ["2026-06-21", 227500, true], ["2026-06-28", 188000, true], ["2026-07-05", 190300, true]]}, "kpmi": {"monthly": [["2024-06", 52.0, false], ["2024-07", 51.4, false], ["2024-08", 51.9, false], ["2024-09", 48.3, false], ["2024-10", 48.3, false], ["2024-11", 50.6, false], ["2024-12", 49.0, false], ["2025-01", 50.3, false], ["2025-02", 49.9, false], ["2025-03", 49.1, false], ["2025-04", 47.5, false], ["2025-05", 47.7, false], ["2025-06", 48.7, false], ["2025-07", 48.0, false], ["2025-08", 48.3, false], ["2025-09", 50.7, true], ["2025-10", 49.4, true], ["2025-11", 49.4, false], ["2025-12", 50.1, true], ["2026-01", 50.4, false], ["2026-02", 51.2, false], ["2026-03", 52.6, true], ["2026-04", 53.6, true]]}, "cpmi": {"monthly": [["2024-06", 51.8, false], ["2024-07", 49.8, false], ["2024-08", 50.4, false], ["2024-09", 49.3, false], ["2024-10", 50.3, false], ["2024-11", 51.5, false], ["2024-12", 50.5, false], ["2025-01", 50.1, false], ["2025-02", 50.8, false], ["2025-03", 51.2, false], ["2025-04", 50.4, false], ["2025-05", 48.3, false], ["2025-06", 50.4, false], ["2025-07", 49.8, false], ["2025-08", 50.5, false], ["2025-09", 51.2, false], ["2025-10", 50.8, false], ["2025-11", 51.5, false], ["2025-12", 50.5, false], ["2026-01", 49.5, false], ["2026-02", 52.1, true], ["2026-03", 50.8, true], ["2026-04", 52.2, true], ["2026-05", 51.8, true]]}, "tpmi": {"monthly": [["2024-06", 51.7, false], ["2024-07", 52.8, false], ["2024-08", 52.0, false], ["2024-09", 50.4, true], ["2024-10", 50.0, true], ["2024-11", 50.2, true], ["2024-12", 51.4, true], ["2025-01", 50.5, false], ["2025-02", 50.9, false], ["2025-03", 50.4, false], ["2025-04", 49.5, false], ["2025-05", 51.2, false], ["2025-06", 51.7, true], ["2025-07", 51.9, true], ["2025-08", 52.7, true], ["2025-09", 54.6, true], ["2025-10", 56.6, true], ["2025-11", 56.8, true], ["2025-12", 57.4, true], ["2026-01", 52.7, true], ["2026-02", 53.5, true], ["2026-03", 54.1, true], ["2026-04", 52.7, true]]}, "epmi": {"monthly": [["2024-06", 49.9, false], ["2024-07", 49.7, false], ["2024-08", 50.4, false], ["2024-09", 48.8, true], ["2024-10", 49.0, true], ["2024-11", 49.2, false], ["2024-12", 48.1, false], ["2025-01", 50.7, false], ["2025-02", 49.2, false], ["2025-03", 49.5, false], ["2025-04", 48.5, false], ["2025-05", 49.5, false], ["2025-06", 48.8, false], ["2025-07", 49.5, false], ["2025-08", 49.2, false], ["2025-09", 47.5, false], ["2025-10", 48.2, false], ["2025-11", 48.5, false], ["2025-12", 49.0, false], ["2026-01", 49.5, false], ["2026-02", 48.9, true], ["2026-03", 48.0, true], ["2026-04", 46.6, true], ["2026-05", 47.1, true]]}};
+const CARDS = {"ch_usdkrw": {"key": "usdkrw", "label": "USD/KRW", "color": "#2563eb", "monthlyOnly": false, "country": "KR"}, "ch_cnykrw": {"key": "cnykrw", "label": "CNY/KRW", "color": "#dc2626", "monthlyOnly": false, "country": "CN"}, "ch_thbkrw": {"key": "thbkrw", "label": "THB/KRW", "color": "#f59e0b", "monthlyOnly": false, "country": "TH"}, "ch_usdegp": {"key": "usdegp", "label": "USD/EGP", "color": "#7c3aed", "monthlyOnly": false, "country": "EG"}, "ch_hrc": {"key": "hrc", "label": "HRC 열연 (국내 유통, 만원/t)", "color": "#059669", "monthlyOnly": false, "country": "KR"}, "ch_crc": {"key": "crc", "label": "CRC 냉연 인상폭 (만원/t)", "color": "#0891b2", "monthlyOnly": false, "country": "KR"}, "ch_alu": {"key": "alu", "label": "LME 알루미늄 3M (USD/t)", "color": "#9333ea", "monthlyOnly": false, "country": "ALL"}, "ch_lge": {"key": "lge", "label": "LG전자 주가 (KRW)", "color": "#ea580c", "monthlyOnly": false, "country": "KR"}, "ch_kpmi": {"key": "kpmi", "label": "한국 제조업 PMI", "color": "#0284c7", "monthlyOnly": true, "country": "KR"}, "ch_cpmi": {"key": "cpmi", "label": "중국 차이신 PMI", "color": "#16a34a", "monthlyOnly": true, "country": "CN"}, "ch_tpmi": {"key": "tpmi", "label": "태국 제조업 PMI", "color": "#dc2626", "monthlyOnly": true, "country": "TH"}, "ch_epmi": {"key": "epmi", "label": "이집트 비석유 PMI", "color": "#7c3aed", "monthlyOnly": true, "country": "EG"}};
+const COUNTRIES = {"ALL":"전체","KR":"🇰🇷 한국","CN":"🇨🇳 중국","TH":"🇹🇭 태국","EG":"🇪🇬 이집트"};
+
+const TODAY = new Date('2026-07-06T00:00:00');
+const chartInstances = {};
+let currentPeriod = 'month';
+let currentRange = 24;
+let currentCountry = 'ALL';
+
+function parseDate(s) {
+  if (s.length === 7) return new Date(s + '-01T00:00:00');
+  return new Date(s + 'T00:00:00');
+}
+
+function filterByRange(data, monthsBack) {
+  const cutoff = new Date(TODAY.getFullYear(), TODAY.getMonth() - monthsBack, TODAY.getDate());
+  return data.filter(d => parseDate(d[0]) >= cutoff);
+}
+
+function isoWeekKey(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return d.getUTCFullYear() + '-W' + String(weekNo).padStart(2, '0');
+}
+
+function aggregateByPeriod(data, period) {
+  if (period === 'day') return data;
+  const groups = {};
+  data.forEach(d => {
+    const date = parseDate(d[0]);
+    let key;
+    if (period === 'week') {
+      key = isoWeekKey(date);
+    } else {
+      key = d[0].substring(0, 7);
+    }
+    if (!groups[key] || parseDate(d[0]) > parseDate(groups[key].origDate)) {
+      groups[key] = { label: key, value: d[1], observed: d[2], origDate: d[0] };
+    }
+  });
+  return Object.values(groups)
+    .sort((a, b) => a.origDate.localeCompare(b.origDate))
+    .map(g => [g.label, g.value, g.observed]);
+}
+
+function renderChart(canvasId) {
+  const cfg = CARDS[canvasId];
+  let raw = cfg.monthlyOnly ? RAW[cfg.key].monthly : RAW[cfg.key].daily;
+  let effectivePeriod = cfg.monthlyOnly ? 'month' : currentPeriod;
+
+  let data = filterByRange(raw, currentRange);
+  data = aggregateByPeriod(data, effectivePeriod);
+
+  const pcEl = document.getElementById('pc_' + cfg.key);
+  if (pcEl) {
+    const obs = data.filter(d => d[2]).length;
+    const total = data.length;
+    const viewLabel = effectivePeriod === 'day' ? '일별' : effectivePeriod === 'week' ? '주별' : '월별';
+    pcEl.textContent = `점 ${total}개 (관측 ${obs}) · 보기: ${viewLabel}`;
+  }
+
+  if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
+
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return;
+  if (data.length === 0) {
+    const parent = ctx.parentElement;
+    let note = parent.querySelector('.empty-note');
+    if (!note) {
+      note = document.createElement('div');
+      note.className = 'empty-note';
+      parent.appendChild(note);
+    }
+    note.textContent = `최근 ${currentRange}개월 데이터 없음`;
+    return;
+  } else {
+    const parent = ctx.parentElement;
+    const note = parent.querySelector('.empty-note');
+    if (note) note.remove();
+  }
+
+  chartInstances[canvasId] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.map(d => d[0]),
+      datasets: [{
+        label: cfg.label,
+        data: data.map(d => d[1]),
+        borderColor: cfg.color,
+        backgroundColor: cfg.color + "20",
+        tension: 0.25,
+        pointRadius: data.map(d => d[2] ? 5 : 3),
+        pointBackgroundColor: data.map(d => d[2] ? cfg.color : "rgba(156,163,175,0.6)"),
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            afterLabel: (c) => data[c.dataIndex][2] ? "✓ 관측" : "ⓘ 추정·보간"
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { font: { size: 9 }, color: "#6b7280", maxRotation: 0, autoSkipPadding: 20 }, grid: { display: false } },
+        y: { ticks: { font: { size: 10 }, color: "#6b7280" }, grid: { color: "#f3f4f6" } }
+      }
+    }
+  });
+}
+
+function applyCountryFilter() {
+  let visible = 0;
+  Object.keys(CARDS).forEach(canvasId => {
+    const cfg = CARDS[canvasId];
+    const card = document.getElementById('card_' + cfg.key);
+    if (!card) return;
+    // ALL 국가 지표(LME 등)는 항상 표시. 그 외엔 선택한 국가와 일치하는지
+    const show = (currentCountry === 'ALL') || (cfg.country === currentCountry) || (cfg.country === 'ALL');
+    card.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+  updateSummaryBar(visible);
+}
+
+function updateSummaryBar(visibleCount) {
+  const bar = document.getElementById('summaryBar');
+  if (!bar) return;
+  const countryLabel = COUNTRIES[currentCountry] || currentCountry;
+  const periodLabel = currentPeriod === 'day' ? '일별' : currentPeriod === 'week' ? '주별' : '월별';
+  bar.textContent = `${countryLabel} ${visibleCount}개 지표 표시 중 · 최근 ${currentRange}개월 · ${periodLabel} 보기`;
+}
+
+function renderAll() {
+  Object.keys(CARDS).forEach(renderChart);
+  applyCountryFilter();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  renderAll();
+
+  document.querySelectorAll('.country-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.country-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      currentCountry = b.dataset.country;
+      applyCountryFilter();
+    });
+  });
+
+  document.querySelectorAll('.range-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.range-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      currentRange = parseInt(b.dataset.range, 10);
+      renderAll();
+    });
+  });
+
+  document.querySelectorAll('.period-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.period-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      currentPeriod = b.dataset.period;
+      renderAll();
+    });
+  });
+});
+</script>
+</body>
+</html>
