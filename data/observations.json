@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "updated_at": "2026-07-06T09:14:37.088102+09:00",
-    "reporting_week": 28,
+    "updated_at": "2026-07-13T09:05:48.352953+09:00",
+    "reporting_week": 29,
     "year": 2026,
     "schema_version": 2,
     "schema_notes": "v2: country 필드 추가, 2년치 월별 데이터 (2024-06 ~ 2026-05), 태국·이집트 PMI 신규 추가",
@@ -25,9 +25,9 @@
       "country": "KR",
       "color": "#2563eb",
       "monthly_only": false,
-      "meta": "최신 1,536.2 (2026-07-05) · 전 1,539.5 (▼-3.30) · (자동)",
+      "meta": "최신 1,500.1 (2026-07-12) · 전 1,536.2 (▼-36.10) · (자동)",
       "badge": "fresh",
-      "badge_text": "07/05 D",
+      "badge_text": "07/12 D",
       "links": [
         {
           "text": "Investing.com 과거데이터",
@@ -194,6 +194,11 @@
           "date": "2026-07-05",
           "value": 1536.2,
           "observed": true
+        },
+        {
+          "date": "2026-07-12",
+          "value": 1500.1,
+          "observed": true
         }
       ]
     },
@@ -202,9 +207,9 @@
       "country": "CN",
       "color": "#dc2626",
       "monthly_only": false,
-      "meta": "최신 250.0 (2026-07-05) · 전 250.0 (→+0.00) · (자동)",
+      "meta": "최신 250.0 (2026-07-12) · 전 250.0 (→+0.00) · (자동)",
       "badge": "fresh",
-      "badge_text": "07/05 D",
+      "badge_text": "07/12 D",
       "links": [
         {
           "text": "Investing.com 과거데이터",
@@ -310,6 +315,11 @@
         },
         {
           "date": "2026-07-05",
+          "value": 250.0,
+          "observed": true
+        },
+        {
+          "date": "2026-07-12",
           "value": 250.0,
           "observed": true
         }
@@ -682,9 +692,9 @@
       "country": "KR",
       "color": "#ea580c",
       "monthly_only": false,
-      "meta": "최신 190,300 (2026-07-05) · 전 188,000 (▲+2300.00) · (자동)",
+      "meta": "최신 196,500 (2026-07-12) · 전 190,300 (▲+6200.00) · (자동)",
       "badge": "fresh",
-      "badge_text": "07/05 D",
+      "badge_text": "07/12 D",
       "links": [
         {
           "text": "조선비즈 — 5월 +74.5%",
@@ -786,6 +796,11 @@
         {
           "date": "2026-07-05",
           "value": 190300,
+          "observed": true
+        },
+        {
+          "date": "2026-07-12",
+          "value": 196500,
           "observed": true
         }
       ]
