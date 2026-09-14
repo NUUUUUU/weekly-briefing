@@ -1,16 +1,12 @@
 {
   "metadata": {
-    "updated_at": "2026-09-07T09:55:14.600260+09:00",
-    "reporting_week": 37,
+    "updated_at": "2026-09-14T09:58:25.703918+09:00",
+    "reporting_week": 38,
     "year": 2026,
     "schema_version": 2,
     "schema_notes": "v2: country 필드 추가, 2년치 월별 데이터 (2024-06 ~ 2026-05), 태국·이집트 PMI 신규 추가",
     "auto_run": true,
-    "last_fetched": [
-      "usdkrw",
-      "cnykrw",
-      "lge"
-    ]
+    "last_fetched": []
   },
   "countries": {
     "ALL": "전체",
